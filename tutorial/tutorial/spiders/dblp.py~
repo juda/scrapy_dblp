@@ -23,11 +23,14 @@ class dblp(scrapy.Spider):
 			#此时为类似http://dblp.uni-trier.de/pers?pos=1的页面
 			url_item = response.url.split('=')
 			next_url = url_item[0] + str(int(url_item[1])+300)]
-			next_author =  sel.xpath('//*[@id="browse-person-output"]/div/div[1]/ul/li[1]/a/text()')
+			next_author =  sel.xpath()
 			return #...
 		else:
 			#此时为类似http://dblp.uni-trier.de/pers/hd/a/A:Arun_Kumar的页面
 			item = TutorialItem()
-			item['name'] =  sel.xpath('//span[@class="this-person"]/text()').extract()
-			item['article'] =  sel.xpath('//span[@class="title"]/text()').extract()
-			item['coauther'] = sel.xpath('//div[@class="data"]/a/text()').extract()
+			item['name'] =  sel.xpath( ).extract()
+			item['article'] =  sel.xpath( ).extract()
+			item['coauther'] = sel.xpath( ).extract()
+
+		
+
