@@ -15,5 +15,9 @@ NEWSPIDER_MODULE = 'tutorial.spiders'
 COOKIES_ENABLED = False
 DEPTH_PRIORITY = 1
 
+ITEM_PIPELINES = {
+    'tutorial.pipelines.TutorialPipeline': 300,
+}
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'tutorial (+http://www.yourdomain.com)'
