@@ -4,32 +4,34 @@ import scrapy
 from tutorial.items import TutorialItem
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors import LinkExtractor
+from scrapy import Selector
+import re
 
-class dblp(scrapy.Spider):
+class dblp(CrawlSpider):
 	"""docstring for dblp"""
 	name = 'dblp_spider'
 	allowed_domains = ['http://dblp.uni-trier.de/']
 	start_urls = [
 		'http://dblp.uni-trier.de/pers?pos=1'
 	]
+	rules = [Rule(LinkExtractor(allow=['/pers\?pos=[0-9]+','/pers/hd/[a-z]/.+']), 'parse')]
 
-	def __init__(self, arg):
-		super(dblp, self).__init__()
-		self.arg = arg
 		
 	def parse(self):
 
 		sel = Selector(response)
 
-		if response.url[-1] in string.letter:
-			#此时为类似http://dblp.uni-trier.de/pers?pos=1的页面
-			url_item = response.url.split('=')
-			next_url = url_item[0] + str(int(url_item[1])+300)]
-			next_author =  sel.xpath('//*[@id="browse-person-output"]/div/div[1]/ul/li[1]/a/text()')
-			return #...
+		pat = re.compile('http://dblp.uni-trier.de/pers/hd/[a-z]/.+')
+		if pat.match(response.url):
+			aritcles = sel.xpath('//*[re:test(@id,"journals/[a-zA-Z]+/[a-zA-Z]*[0-9]+")]/div[3]/span[2]/text()').extract()
+			for aritcle in aritcles:
+				item = TutorialItem()
+				item['name'] = sel.xpath('/html/head/title/text()').extract()
+				item['article'] = article
+			aritcles = sel.xpath('//*[re:test(@id,"conf/[a-zA-Z]+/[a-zA-Z]*[0-9]+")]/div[3]/span[2]/text()').extract()
+			for aritcle in aritcles:
+				item = TutorialItem()
+				item['name'] = sel.xpath('/html/head/title/text()').extract()
+				item['article'] = article
 		else:
-			#此时为类似http://dblp.uni-trier.de/pers/hd/a/A:Arun_Kumar的页面
-			item = TutorialItem()
-			item['name'] =  sel.xpath('//span[@class="this-person"]/text()').extract()
-			item['article'] =  sel.xpath('//span[@class="title"]/text()').extract()
-			item['coauther'] = sel.xpath('//div[@class="data"]/a/text()').extract()
+			return []
