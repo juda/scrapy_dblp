@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import scrapy
-import string
+from tutorial.items import TutorialItem
+from scrapy.contrib.spiders import CrawlSpider, Rule
+from scrapy.contrib.linkextractors import LinkExtractor
 
 class dblp(scrapy.Spider):
 	"""docstring for dblp"""

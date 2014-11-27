@@ -12,5 +12,4 @@ class TutorialItem(scrapy.Item):
     # define the fields for your item here like:
     name = scrapy.Field() #作者名字
     aritcle = scrapy.Field() #文章名字
-    coauther =  scrapy.Field() #合作者
     
