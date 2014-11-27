@@ -15,12 +15,12 @@ class dblp(CrawlSpider):
 		'http://dblp.uni-trier.de/pers?pos=1'
 	]
 	rules = [
-		Rule(LinkExtractor(allow=['/pers\?pos=[0-9]+']) ),
-		Rule(LinkExtractor(allow=['/pers/hd/[a-z]/.+']), 'parse_dblp')
+		Rule(LinkExtractor(allow=['\?pos=[0-9]+']) ),
+		Rule(LinkExtractor(allow=['http://dblp.uni-trier.de/pers/hd/[a-zA-Z]/.*']), 'parse_dblp')
 	]
 
 		
-	def parse_dblp(self):
+	def parse_dblp(self,response):
 
 		sel = Selector(response)
 
