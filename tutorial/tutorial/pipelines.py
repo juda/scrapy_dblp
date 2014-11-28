@@ -6,11 +6,17 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from scrapy.exceptions import DropItem
 import json
+import sets
 
 class TutorialPipeline(object):
 	def __init__(self):
-		self.file = open('item.jl', 'wb')
+		self.file = open('item.json', 'wb')
+		self.container = sets.Set()
+
 	def process_item(self, item, spider):
+		if item['article'] in self.container:
+			raise DropItem('existed!')
 		line = json.dumps(dict(item)) + "\n"
 		self.file.write(line)
+		self.container.add(item['article'])
 		return item

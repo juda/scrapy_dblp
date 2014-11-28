@@ -33,7 +33,7 @@ class dblp(CrawlSpider):
 				item['article'] = article
 				yield item
 			aritcles = sel.xpath('//*[re:test(@id,"conf/[a-zA-Z]+/[a-zA-Z]*[0-9]+")]/div[3]/span[2]/text()').extract()
-			for aritcle in aritcles:
+			for article in aritcles:
 				item = TutorialItem()
 				item['name'] = sel.xpath('/html/head/title/text()').extract()
 				item['article'] = article

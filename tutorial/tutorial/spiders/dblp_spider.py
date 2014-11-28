@@ -25,27 +25,24 @@ class dblpSpider(Spider):
 
 		print response.url
 		sel = Selector(response)
-		if(response.url == 'http://dblp.uni-trier.de/pers?pos=1'):
+		if (re.match('http://dblp\.uni-trier\.de/pers\?pos=[0-9]+',response.url)):
 			sites = sel.xpath('//div/ul/li/a/@href').extract()
 			for site in sites:
-				print site
 				yield Request(site ,callback=self.parse)
 		else:
 			time.sleep(1)
-			pat = re.compile('http://dblp.uni-trier.de/pers/hd/[a-z]/.+')
+			pat = re.compile('http://dblp\.uni-trier\.de/pers/hd/[a-z]/.+')
 			if pat.match(response.url):
 				aritcles = sel.xpath('//*[re:test(@id,"journals/[a-zA-Z]+/[a-zA-Z]*[0-9]+")]/div[3]/span[2]/text()').extract()
-				print 'aritcles'
-				print aritcles
 				for aritcle in aritcles:
 					item = TutorialItem()
-					item['name'] = sel.xpath('/html/head/title/text()').extract()
-					item['article'] = aritcles
+					item['name'] = sel.xpath('/html/head/title/text()').extract()[0].split('dblp: ')[1]
+					item['article'] = aritcle
 					yield item
 				aritcles = sel.xpath('//*[re:test(@id,"conf/[a-zA-Z]+/[a-zA-Z]*[0-9]+")]/div[3]/span[2]/text()').extract()
 				for aritcle in aritcles:
 					item = TutorialItem()
-					item['name'] = sel.xpath('/html/head/title/text()').extract()
-					item['article'] = aritcles
+					item['name'] = sel.xpath('/html/head/title/text()').extract()[0].split('dblp: ')[1]
+					item['article'] = aritcle
 					yield item
 
